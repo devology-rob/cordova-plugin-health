@@ -6,6 +6,10 @@
   <name>Cordova Health</name>
 
   <description>
+    This is a clone of the cordova-plugin-health from Dario Salvi, specifically from version 0.9.0
+    on GitHub.  The purpose is to only use READ access to the health data, plus removal of SLEEP ANALYSIS
+    from the iOS implementation.
+    
     A plugin that abstracts fitness and health repositories like Apple HealthKit or Google Fit
   </description>
 
