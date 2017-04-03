@@ -94,6 +94,17 @@ var prepareDatatype4Auth = function (dts, success, error) {
 Health.prototype.requestAuthorization = function (dts, onSuccess, onError) {
   prepareDatatype4Auth(dts, function (HKdatatypes) {
     if (HKdatatypes.length) {
+
+      console.log("requestAuthorization invoked with data types...");
+      for(i in dts) {
+        console.log("   "+dts[i]);
+      }
+
+      console.log("requestAuthorization resolved to requesting these iOS data types...");
+      for(i in HKdatatypes) {
+        console.log("   "+HKdatatypes[i]);
+      }
+
       window.plugins.healthkit.requestAuthorization({
         'readTypes': HKdatatypes,
         'writeTypes': []
@@ -104,20 +115,53 @@ Health.prototype.requestAuthorization = function (dts, onSuccess, onError) {
 
 Health.prototype.isAuthorized = function(dts, onSuccess, onError) {
   prepareDatatype4Auth(dts, function (HKdatatypes) {
+
+    console.log("isAuthorized invoked with iOS data types...");
+    for(i in HKdatatypes) {
+      console.log("   "+HKdatatypes[i]);
+    }
+
+    var matches = 0;
+    var lengthOfHKDataTypes = HKdatatypes.length;
+
     var check = function () {
       if (HKdatatypes.length > 0) {
         var dt = HKdatatypes.shift();
+        console.log("isAuthorized is testing HKDataType - "+dt);
         window.plugins.healthkit.checkAuthStatus({
           type: dt
         }, function (auth) {
-          if (auth === 'authorized') check();
-          else onSuccess(false);
+          console.log("isAuthorized tested HKDataType - "+dt+" result:"+auth);
+          if (auth === 'authorized')  {
+            matches++;
+            check();
+          }
+          // else onSuccess(false);
         }, onError);
-      } else onSuccess(true);
+      } else {
+        console.log("isAuthorized matches:"+matches+" out of:"+lengthOfHKDataTypes);
+        onSuccess(matches === lengthOfHKDataTypes);
+      }
     }
     check();
   }, onError);
 }
+// Health.prototype.isAuthorized = function(dts, onSuccess, onError) {
+//   prepareDatatype4Auth(dts, function (HKdatatypes) {
+//     var check = function () {
+//       if (HKdatatypes.length > 0) {
+//         var dt = HKdatatypes.shift();
+//         window.plugins.healthkit.checkAuthStatus({
+//           type: dt
+//         }, function (auth) {
+//           if (auth === 'authorized') check();
+//           else onSuccess(false);
+//         }, onError);
+//       } else onSuccess(true);
+//     }
+//     check();
+//   }, onError);
+// }
 
 Health.prototype.query = function (opts, onSuccess, onError) {
   var startD = opts.startDate;
