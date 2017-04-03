@@ -503,19 +503,25 @@ static NSString *const HKPluginKeyUUID = @"UUID";
 
     for (NSString *elem in readTypes) {
 #ifdef HKPLUGIN_DEBUG
-        NSLog(@"Requesting read permissions for %@", elem);
+        NSLog(@"Requesting readTypes for %@", elem);
 #endif
         HKObjectType *type = nil;
 
         if ([elem isEqual:@"HKWorkoutTypeIdentifier"]) {
             type = [HKObjectType workoutType];
+#ifdef HKPLUGIN_DEBUG
+        NSLog(@"Explicitly set to workoutType");
+#endif
         } else {
             type = [HealthKit getHKObjectType:elem];
+#ifdef HKPLUGIN_DEBUG
+        NSLog(@"Looked up %@ resolved to type %@",elem, type);
+#endif
         }
 
         if (type == nil) {
 #ifdef HKPLUGIN_DEBUG
-        NSLog(@"Requesting read permissions - nill type detected %@", elem);
+        NSLog(@"Requesting readTypes - nill type detected %@", elem);
 #endif            
             CDVPluginResult *result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"readTypes contains an invalid value"];
             [result setKeepCallbackAsBool:YES];
@@ -524,7 +530,7 @@ static NSString *const HKPluginKeyUUID = @"UUID";
         } else {
             [readDataTypes addObject:type];
 #ifdef HKPLUGIN_DEBUG
-        NSLog(@"Requesting read permissions - add type to readDataTypes array %@", elem);
+        NSLog(@"Requesting readTypes - add type to readDataTypes array %@", elem);
 #endif            
         }
     }

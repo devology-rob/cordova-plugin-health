@@ -96,7 +96,7 @@ Health.prototype.requestAuthorization = function (dts, onSuccess, onError) {
     if (HKdatatypes.length) {
       window.plugins.healthkit.requestAuthorization({
         'readTypes': HKdatatypes,
-        'writeTypes': HKdatatypes
+        'writeTypes': []
       }, onSuccess, onError);
     } else onSuccess();
   }, onError);
