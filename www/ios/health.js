@@ -80,7 +80,7 @@ var prepareDatatype4Auth = function (dts, success, error) {
       } else if (dataTypes[dts[i]]) {
         HKdatatypes.push(dataTypes[dts[i]]);
         if (dts[i] === 'distance') HKdatatypes.push('HKQuantityTypeIdentifierDistanceCycling');
-        if (dts[i] === 'activity') HKdatatypes.push('HKCategoryTypeIdentifierSleepAnalysis');
+        //if (dts[i] === 'activity') HKdatatypes.push('HKCategoryTypeIdentifierSleepAnalysis');
         if (dts[i] === 'calories') HKdatatypes.push('HKQuantityTypeIdentifierBasalEnergyBurned');
       } else {
         error('unknown data type ' + dts[i]);
@@ -169,22 +169,26 @@ Health.prototype.query = function (opts, onSuccess, onError) {
           result.push(res);
         }
       }
-      // get sleep analysis also
-      opts.sampleType = 'HKCategoryTypeIdentifierSleepAnalysis';
-      window.plugins.healthkit.querySampleType(opts, function (data) {
-        for (var i = 0; i < data.length; i++) {
-          var res = {};
-          res.startDate = new Date(data[i].startDate);
-          res.endDate = new Date(data[i].endDate);
-          if (data[i].value == 0) res.value = 'sleep.awake';
-          else res.value = 'sleep';
-          res.unit = 'activityType';
-          res.sourceName = data[i].sourceName;
-          res.sourceBundleId = data[i].sourceBundleId;
-          result.push(res);
-        }
-        onSuccess(result);
-      }, onError);
+
+      onSuccess(result);
+
+      // // get sleep analysis also
+      // opts.sampleType = 'HKCategoryTypeIdentifierSleepAnalysis';
+      // window.plugins.healthkit.querySampleType(opts, function (data) {
+      //   for (var i = 0; i < data.length; i++) {
+      //     var res = {};
+      //     res.startDate = new Date(data[i].startDate);
+      //     res.endDate = new Date(data[i].endDate);
+      //     if (data[i].value == 0) res.value = 'sleep.awake';
+      //     else res.value = 'sleep';
+      //     res.unit = 'activityType';
+      //     res.sourceName = data[i].sourceName;
+      //     res.sourceBundleId = data[i].sourceBundleId;
+      //     result.push(res);
+      //   }
+      //   onSuccess(result);
+      // }, onError);
+
     }, onError);
   } else if (opts.dataType === 'nutrition') {
     var result = [];
