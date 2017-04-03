@@ -133,9 +133,9 @@ Health.prototype.isAuthorized = function(dts, onSuccess, onError) {
         }, function (auth) {
           console.log("isAuthorized tested HKDataType - "+dt+" result:"+auth);
           if (auth === 'authorized')  {
-            matches++;
-            check();
+            matches++;            
           }
+          check();
           // else onSuccess(false);
         }, onError);
       } else {
