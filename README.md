@@ -19,7 +19,7 @@ See the [official terms](https://developers.google.com/fit/terms).
 Just execute this line in your project's folder:
 
 ```
-cordova plugin add cordova-plugin-health
+cordova plugin add cordova-plugin-health-readonly
 ```
 
 this will install the latest release.
