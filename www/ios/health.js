@@ -113,6 +113,9 @@ Health.prototype.requestAuthorization = function (dts, onSuccess, onError) {
   }, onError);
 };
 
+// *****
+// NOTE - Our App Framework will NOT call this method - becuase it's based on WRITE permissions only!!
+// *****
 Health.prototype.isAuthorized = function(dts, onSuccess, onError) {
   prepareDatatype4Auth(dts, function (HKdatatypes) {
 

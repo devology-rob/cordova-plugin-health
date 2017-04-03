@@ -84,6 +84,11 @@ static NSString *const HKPluginKeyUUID = @"UUID";
  * @param type          *HKObjectType
  * @param completion    void(^)
  */
+
+// *****
+// NOTE - Our App Framework will NOT call this method - becuase it's based on WRITE permissions only!!
+// *****
+ 
 - (void)checkAuthStatusWithCallbackId:(NSString *)callbackId forType:(HKObjectType *)type andCompletion:(void (^)(CDVPluginResult *, NSString *))completion {
 
     CDVPluginResult *pluginResult = nil;
@@ -96,7 +101,9 @@ static NSString *const HKPluginKeyUUID = @"UUID";
         
         pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"type is an invalid value"];
     } else {
-        HKAuthorizationStatus status = [[HealthKit sharedHealthStore] authorizationStatusForType:type];
+
+       // HKAuthorizationStatus status = [[HealthKit sharedHealthStore] authorizationStatusForType:type];
+HKAuthorizationStatus status = [[HealthKit sharedHealthStore] authorizationStatusForType:type];
 
         NSString *authorizationResult = nil;
         switch (status) {
@@ -591,6 +598,11 @@ static NSString *const HKPluginKeyUUID = @"UUID";
  *
  * @param command *CDVInvokedUrlCommand
  */
+
+// *****
+// NOTE - Our App Framework will NOT call this method - becuase it's based on WRITE permissions only!!
+// *****
+
 - (void)checkAuthStatus:(CDVInvokedUrlCommand *)command {
     // If status = denied, prompt user to go to settings or the Health app
     // Note that read access is not reflected. We're not allowed to know
