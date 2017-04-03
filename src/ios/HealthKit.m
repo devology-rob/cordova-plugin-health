@@ -531,30 +531,29 @@ static NSString *const HKPluginKeyUUID = @"UUID";
 
     // write types
     NSArray<NSString *> *writeTypes = args[HKPluginKeyWriteTypes];
-    // NSMutableSet *writeDataTypes = [[NSMutableSet alloc] init];
-    NSMutableSet *writeDataTypes = nil;
+    NSMutableSet *writeDataTypes = [[NSMutableSet alloc] init];
 
-//     for (NSString *elem in writeTypes) {
-// #ifdef HKPLUGIN_DEBUG
-//         NSLog(@"Requesting write permission for %@", elem);
-// #endif
-//         HKObjectType *type = nil;
+    for (NSString *elem in writeTypes) {
+#ifdef HKPLUGIN_DEBUG
+        NSLog(@"Requesting write permission for %@", elem);
+#endif
+        HKObjectType *type = nil;
 
-//         if ([elem isEqual:@"HKWorkoutTypeIdentifier"]) {
-//             type = [HKObjectType workoutType];
-//         } else {
-//             type = [HealthKit getHKObjectType:elem];
-//         }
+        if ([elem isEqual:@"HKWorkoutTypeIdentifier"]) {
+            type = [HKObjectType workoutType];
+        } else {
+            type = [HealthKit getHKObjectType:elem];
+        }
 
-//         if (type == nil) {
-//             CDVPluginResult *result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"writeTypes contains an invalid value"];
-//             [result setKeepCallbackAsBool:YES];
-//             [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
-//             // not returning deliberately to be future proof; other permissions are still asked
-//         } else {
-//             [writeDataTypes addObject:type];
-//         }
-//     }
+        if (type == nil) {
+            CDVPluginResult *result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"writeTypes contains an invalid value"];
+            [result setKeepCallbackAsBool:YES];
+            [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
+            // not returning deliberately to be future proof; other permissions are still asked
+        } else {
+            [writeDataTypes addObject:type];
+        }
+    }
 
     //[[HealthKit sharedHealthStore] requestAuthorizationToShareTypes:writeDataTypes readTypes:readDataTypes completion:^(BOOL success, NSError *error) {
     [[HealthKit sharedHealthStore] requestAuthorizationToShareTypes:writeDataTypes readTypes:readDataTypes completion:^(BOOL success, NSError *error) {
