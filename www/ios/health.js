@@ -80,7 +80,7 @@ var prepareDatatype4Auth = function (dts, success, error) {
       } else if (dataTypes[dts[i]]) {
         HKdatatypes.push(dataTypes[dts[i]]);
         if (dts[i] === 'distance') HKdatatypes.push('HKQuantityTypeIdentifierDistanceCycling');
-        //if (dts[i] === 'activity') HKdatatypes.push('HKCategoryTypeIdentifierSleepAnalysis');
+        if (dts[i] === 'activity') HKdatatypes.push('HKCategoryTypeIdentifierSleepAnalysis');
         if (dts[i] === 'calories') HKdatatypes.push('HKQuantityTypeIdentifierBasalEnergyBurned');
       } else {
         error('unknown data type ' + dts[i]);
