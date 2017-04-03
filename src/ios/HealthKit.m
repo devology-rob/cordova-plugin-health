@@ -89,6 +89,11 @@ static NSString *const HKPluginKeyUUID = @"UUID";
     CDVPluginResult *pluginResult = nil;
 
     if (type == nil) {
+
+#ifdef HKPLUGIN_DEBUG
+        NSLog(@"checkAuthStatusWithCallbackId invalid type detected (null)");
+#endif
+        
         pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"type is an invalid value"];
     } else {
         HKAuthorizationStatus status = [[HealthKit sharedHealthStore] authorizationStatusForType:type];
@@ -509,18 +514,25 @@ static NSString *const HKPluginKeyUUID = @"UUID";
         }
 
         if (type == nil) {
+#ifdef HKPLUGIN_DEBUG
+        NSLog(@"Requesting read permissions - nill type detected %@", elem);
+#endif            
             CDVPluginResult *result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"readTypes contains an invalid value"];
             [result setKeepCallbackAsBool:YES];
             [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
             // not returning deliberately to be future proof; other permissions are still asked
         } else {
             [readDataTypes addObject:type];
+#ifdef HKPLUGIN_DEBUG
+        NSLog(@"Requesting read permissions - add type to readDataTypes array %@", elem);
+#endif            
         }
     }
 
     // write types
     NSArray<NSString *> *writeTypes = args[HKPluginKeyWriteTypes];
-    NSMutableSet *writeDataTypes = [[NSMutableSet alloc] init];
+    // NSMutableSet *writeDataTypes = [[NSMutableSet alloc] init];
+    NSMutableSet *writeDataTypes = null;
 
 //     for (NSString *elem in writeTypes) {
 // #ifdef HKPLUGIN_DEBUG
@@ -544,13 +556,23 @@ static NSString *const HKPluginKeyUUID = @"UUID";
 //         }
 //     }
 
+    //[[HealthKit sharedHealthStore] requestAuthorizationToShareTypes:writeDataTypes readTypes:readDataTypes completion:^(BOOL success, NSError *error) {
     [[HealthKit sharedHealthStore] requestAuthorizationToShareTypes:writeDataTypes readTypes:readDataTypes completion:^(BOOL success, NSError *error) {
+#ifdef HKPLUGIN_DEBUG
+        NSLog(@"requestAuthorizationToShareTypes invoked");
+#endif            
         if (success) {
+#ifdef HKPLUGIN_DEBUG
+        NSLog(@"requestAuthorizationToShareTypes success detected");
+#endif            
             dispatch_sync(dispatch_get_main_queue(), ^{
                 CDVPluginResult *result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
                 [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
             });
         } else {
+#ifdef HKPLUGIN_DEBUG
+        NSLog(@"requestAuthorizationToShareTypes non-success detected");
+#endif            
             dispatch_sync(dispatch_get_main_queue(), ^{
                 CDVPluginResult *result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:error.localizedDescription];
                 [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];

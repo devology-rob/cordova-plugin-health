@@ -438,10 +438,10 @@ public class HealthPlugin extends CordovaPlugin {
         builder.addApi(Fitness.CONFIG_API);
         builder.addApi(Fitness.SESSIONS_API);
         //scopes: https://developers.google.com/android/reference/com/google/android/gms/common/Scopes.html
-        if (bodyscope) builder.addScope(new Scope(Scopes.FITNESS_BODY_READ_WRITE));
-        if (activityscope) builder.addScope(new Scope(Scopes.FITNESS_ACTIVITY_READ_WRITE));
-        if (locationscope) builder.addScope(new Scope(Scopes.FITNESS_LOCATION_READ_WRITE));
-        if (nutritionscope) builder.addScope(new Scope(Scopes.FITNESS_NUTRITION_READ_WRITE));
+        if (bodyscope) builder.addScope(new Scope(Scopes.FITNESS_BODY_READ));
+        if (activityscope) builder.addScope(new Scope(Scopes.FITNESS_ACTIVITY_READ));
+        if (locationscope) builder.addScope(new Scope(Scopes.FITNESS_LOCATION_READ));
+        if (nutritionscope) builder.addScope(new Scope(Scopes.FITNESS_NUTRITION_READ));
 
         builder.addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
             @Override
